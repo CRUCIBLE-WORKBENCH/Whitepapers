@@ -16,9 +16,13 @@ Each of these is a standalone repository paired with the experiment repository t
 |---|---|---|
 | `analog_whitepapers/` | `ignytion_ae/analog_whitepapers` | `ignytion_ae/analog_experiments` |
 | `verilog_whitepapers/` | `ignytion_ae/verilog_whitepapers` | `ignytion_ae/verilog_experiments` |
-| `synthesis_whitepapers/` | `ignytion_ae/synthesis_whitepapers` | `ignytion_ae/apb_synthesis_with_sky130pdk` |
+| `synthesis_whitepapers/` | `ignytion_ae/synthesis_whitepapers` | `ignytion_ae/apb_rtl_to_gds` |
 | `opensoc_whitepapers/` | `ignytion_ae/opensoc_whitepapers` | `ignytion_ae/silicon-sethu` |
 | `python4vlsi_whitepapers/` | `ignytion_ae/python4vlsi_whitepapers` | `ignytion_ae/python4vlsi` |
+| `hls_whitepapers/` | `ignytion_ae/hls_whitepapers` | `ignytion_ae/HLS_experiment` |
+| `vp_whitepapers/` | `ignytion_ae/vp_whitepapers` | `core_product/crucyble_flow_demo/crucible-vp-demos` ⚠ |
+
+⚠ `vp_whitepapers` is the one pair that crosses group boundaries — its documents sit in `ignytion_ae`, its demos in `core_product/crucyble_flow_demo`. Access to one does not imply access to the other, and that group's external-reach clearance should be confirmed separately.
 
 ### Plain folders
 
@@ -28,8 +32,6 @@ These sets have no paired experiment repository and are tracked directly here. S
 |---|---|
 | `platform_thesis/` | `Ignytion-Whitepaper.pdf` — the platform thesis |
 | `user_guides/` | Crucible Windows and Linux user guides |
-| `vp_whitepapers/` | Virtual prototyping lab note |
-| `hls_whitepapers/` | High-level synthesis with Bambu lab note |
 
 ---
 
@@ -136,15 +138,24 @@ Underscores, no spaces, no parenthesised suffixes such as `(1)`, no `copy` in th
 
 ## Housekeeping
 
-Known issues in the current set, in priority order:
+Known issues in the current set, in priority order. Items inside a submodule are fixed in that repository and land here as a pointer bump; each document repository's own README repeats the items that belong to it.
+
+**In this repository**
 
 1. **`user_guides/Ignytion_Crucible_Linux_User_Guide.pdf` cover is broken.** Page 1 carries two overlapping 31 pt titles — `Crucible Windows User Guide` and `Crucible Linux User Guide` stacked on top of each other. The Windows title was not deleted when the Linux variant was derived. Re-export before this guide goes to anyone.
 2. **The two user guides were built by different pipelines.** Windows is 19 pages from WeasyPrint (HTML); Linux is 13 pages from PowerPoint. They do not match in length or layout. Pick one pipeline and rebuild the other against it.
-3. **`vp_whitepapers/VP_Experiments_Whitepaper (1) copy.pdf` is a byte-identical duplicate** of `VP_Experiments_Whitepaper (1).pdf`. Delete the copy and rename the survivor per the convention above.
-4. **`synthesis_whitepapers/` holds the same lab note twice.** `synthesis_whitepaper.pdf` and `Counter_experiment_whitepaper.pdf` differ only in the "Day 2" framing and minor rewording; the latter is the later revision. Confirm which is canonical and retire the other.
-5. **Filenames are inconsistent.** Only the Analog CMOS and HLS notes follow the convention. The rest should be renamed on their next revision.
-6. **`platform_thesis/Ignytion-Whitepaper.pdf` is US Letter** (8.50 × 11.00 in) while everything else is A4. Migrate it at its next major revision.
-7. **`python4vlsi_whitepapers/` has no document yet.** The lab series exists in the paired repository; the write-up is still to be authored.
+3. **`platform_thesis/Ignytion-Whitepaper.pdf` is US Letter** (8.50 × 11.00 in) while everything else is A4. Migrate it at its next major revision.
+
+**In the document submodules**
+
+4. **`vp_whitepapers`: `VP_Experiments_Whitepaper (1) copy.pdf` is a byte-identical duplicate** of `VP_Experiments_Whitepaper (1).pdf`. Delete the copy and rename the survivor per the convention above.
+5. **`synthesis_whitepapers` holds the counter lab note twice.** `synthesis_whitepaper.pdf` and `Counter_experiment_whitepaper.pdf` differ only in the "Day 2" framing and minor rewording; the latter is the later revision. Confirm which is canonical and retire the other. The newer `APB_RTL_to_GDS_Ignytion_A4.pdf` supersedes neither — it covers the full flow, not the counter.
+6. **`python4vlsi_whitepapers` has no document yet.** The lab series exists in the paired repository; the write-up is still to be authored.
+7. **Filenames are inconsistent.** Only the Analog CMOS, HLS, and APB RTL-to-GDS notes follow the convention. The rest should be renamed on their next revision.
+
+**Repository naming**
+
+8. **`HLS_experiment` breaks the naming pattern** used by its siblings (`analog_experiments`, `verilog_experiments`) — capitalised and singular. Renaming it to `hls_experiments` would mean updating the submodule name, path, and URL in `hls_whitepapers`, and its own `origin`. Left as-is until decided.
 
 ---
 

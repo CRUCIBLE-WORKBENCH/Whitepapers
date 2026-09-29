@@ -18,3 +18,11 @@
 	path = python4vlsi_whitepapers
 	url = https://gitlab.com/ignytion_io-group/ignytion_ae/python4vlsi_whitepapers.git
 	branch = main
+[submodule "vp_whitepapers"]
+	path = vp_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/vp_whitepapers.git
+	branch = main
+[submodule "hls_whitepapers"]
+	path = hls_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/hls_whitepapers.git
+	branch = main
