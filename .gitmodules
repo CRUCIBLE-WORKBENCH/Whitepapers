@@ -1,0 +1,20 @@
+[submodule "analog_whitepapers"]
+	path = analog_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/analog_whitepapers.git
+	branch = main
+[submodule "verilog_whitepapers"]
+	path = verilog_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/verilog_whitepapers.git
+	branch = main
+[submodule "synthesis_whitepapers"]
+	path = synthesis_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/synthesis_whitepapers.git
+	branch = main
+[submodule "opensoc_whitepapers"]
+	path = opensoc_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/opensoc_whitepapers.git
+	branch = main
+[submodule "python4vlsi_whitepapers"]
+	path = python4vlsi_whitepapers
+	url = https://gitlab.com/ignytion_io-group/ignytion_ae/python4vlsi_whitepapers.git
+	branch = main

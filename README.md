@@ -2,40 +2,86 @@
 
 Published whitepapers, technical lab notes, and user guides for the **Crucible** workbench and the **Igny** CLI.
 
-This repository holds the **distributable PDFs only** — the finished artefacts that go to customers, evaluators, and the public site. Authoring sources (PPTX/HTML), the brand colour system, and the layout specification live in the internal `Docs-and-Branding` tree and are deliberately not mirrored here.
-
-> Everything committed here is externally reachable. Only publication-approved material belongs in this repository — no source code, no internal engineering state, no unreleased claims.
+This repository is a **superproject**. Each module's documents live in their own repository, checked out here as a submodule, so a document set can be versioned, branched, and released independently of the others. Document sets with no paired experiment repository stay as plain folders.
 
 ---
 
-## Contents
+## Layout
 
-### Platform thesis
+### Module document repositories (submodules)
 
-| Document | Pages | What it covers |
+Each of these is a standalone repository paired with the experiment repository that produced its documents.
+
+| Folder | Document repository | Paired experiment repository |
 |---|---|---|
-| [`Ignytion-Whitepaper.pdf`](Ignytion-Whitepaper.pdf) | 13 | *Ignytion's Guide to Open Source* — the platform thesis on infrastructure, orchestration, and the execution layer for next-generation silicon development. Covers the compute layer, orchestration and execution, the workflow surface, and observability and trust. |
+| `analog_whitepapers/` | `ignytion_ae/analog_whitepapers` | `ignytion_ae/analog_experiments` |
+| `verilog_whitepapers/` | `ignytion_ae/verilog_whitepapers` | `ignytion_ae/verilog_experiments` |
+| `synthesis_whitepapers/` | `ignytion_ae/synthesis_whitepapers` | `ignytion_ae/apb_synthesis_with_sky130pdk` |
+| `opensoc_whitepapers/` | `ignytion_ae/opensoc_whitepapers` | `ignytion_ae/silicon-sethu` |
+| `python4vlsi_whitepapers/` | `ignytion_ae/python4vlsi_whitepapers` | `ignytion_ae/python4vlsi` |
 
-### Technical lab notes — Crucible Platform Series
+### Plain folders
 
-Each lab note runs a real toolchain end-to-end through `igny`, in a reproducible workspace, and reports measured results.
+These sets have no paired experiment repository and are tracked directly here. Split them out the same way if and when one appears.
 
-| Document | Pages | Date | What it demonstrates | Tools via `igny` |
-|---|---|---|---|---|
-| [`HLS_Bambu_Experiment_Ignytion_A4.pdf`](HLS_Bambu_Experiment_Ignytion_A4.pdf) | 9 | Sep 2026 | High-level synthesis: a six-line C function synthesised to Verilog RTL, then proven equivalent to the C. Two stages, both passing, reproducible from a committed `crucible.lock`. | `bambu` 2024.10, `iverilog` 14.0.0, `vvp` |
-| [`Analog_CMOS_Experiments_Ignytion_A4.pdf`](Analog_CMOS_Experiments_Ignytion_A4.pdf) | 16 | Jul 2026 | Six analog CMOS experiments — MOS device modelling, logic families, amplification, oscillation. Each pairs a Python design-equation check with a SPICE deck. | `ngspice`, Python, Matplotlib |
-| [`opensoc_L1_whitepaper.pdf`](opensoc_L1_whitepaper.pdf) | 13 | Jul 2026 | *OpenSoC* — a RISC-V SoC from Silicon Setu brought up on Crucible. Four experiments: RV32IM firmware build, static RTL lint, GPIO simulation, UART simulation. | `riscv-none-elf-gcc`, `verilator`, `gtkwave` |
-| [`VP_Experiments_Whitepaper (1).pdf`](VP_Experiments_Whitepaper%20(1).pdf) | 14 | Jun 2026 | Virtual prototyping for RISC-V silicon: boot Linux on a virtual SoC, integrate a custom AI accelerator IP, run a quantised MNIST classifier — 100% accuracy across 740 accelerator invocations, no physical hardware. | LiteX, VexRiscv, Renode |
-| [`Verilog_Experiments_Whitepaper.pdf`](Verilog_Experiments_Whitepaper.pdf) | 20 | Jun 2026 | Five foundational Verilog experiments — D flip-flop, up/down counter, seven-segment decoder, Mealy sequence detector, three-number adder. Standard lab structure throughout: Aim, Apparatus, Theory, RTL, Procedure, Observations, Result. | `iverilog`, `vvp`, `gtkwave` |
-| [`Counter_experiment_whitepaper.pdf`](Counter_experiment_whitepaper.pdf) | 9 | Jun 2026 | ASIC design and verification: simulate a 4-bit counter, view its waveform, synthesise it to a standard-cell gate-level netlist. | `iverilog`, `vvp`, `gtkwave`, `yosys` + Nangate |
-| [`synthesis_whitepaper.pdf`](synthesis_whitepaper.pdf) | 9 | Jun 2026 | The earlier "Day 2" revision of the counter lab note above. See [Housekeeping](#housekeeping). | as above |
+| Folder | Contents |
+|---|---|
+| `platform_thesis/` | `Ignytion-Whitepaper.pdf` — the platform thesis |
+| `user_guides/` | Crucible Windows and Linux user guides |
+| `vp_whitepapers/` | Virtual prototyping lab note |
+| `hls_whitepapers/` | High-level synthesis with Bambu lab note |
 
-### User guides
+---
 
-| Document | Pages | What it covers |
-|---|---|---|
-| [`Ignytion_Crucible_Windows_User_Guide_Updated.pdf`](Ignytion_Crucible_Windows_User_Guide_Updated.pdf) | 19 | Setting up a chip-design toolchain on Windows, running digital and analog experiments, and reproducing the same environment on any machine — without installing a tool by hand. |
-| [`Ignytion_Crucible_Linux_User_Guide.pdf`](Ignytion_Crucible_Linux_User_Guide.pdf) | 13 | The Linux equivalent. See [Housekeeping](#housekeeping) — the cover needs a fix. |
+## Cloning
+
+```bash
+git clone --recurse-submodules https://gitlab.com/ignytion_io-group/ignytion_ae/whitepapers.git
+```
+
+In an existing clone:
+
+```bash
+git submodule update --init --recursive
+```
+
+`--recursive` is safe here. Each document repository carries its paired experiment repository as a submodule declared with `update = none`, so a recursive checkout stops at that boundary instead of following the pair back and forth forever. To pull an experiment tree in deliberately:
+
+```bash
+cd analog_whitepapers
+git submodule update --init -- analog_experiments
+```
+
+### Why the pairing is circular
+
+A document is only reproducible if you can get back to the exact experiment revision behind its numbers, and an experiment is only publishable if you can find the write-up that reports it. Both directions are load-bearing, so each side pins the other:
+
+```text
+whitepapers/                            (superproject)
+└── analog_whitepapers/                 submodule, normal update
+    ├── Analog_CMOS_Experiments_…pdf
+    └── analog_experiments/             submodule, update = none  ← recursion stops here
+        └── analog_whitepapers/         declared, never fetched by the line above
+```
+
+The `update = none` guard lives on the document-repository side only. One guard is enough to break the cycle from any entry point.
+
+---
+
+## Scope and publication boundary
+
+> **This repository is externally reachable.** Everything committed here, and everything reachable through its submodules, is publishable material.
+
+The document repositories hold **exported PDFs only** — never PPTX or HTML authoring sources, which stay in the internal `Docs-and-Branding` tree along with the colour system and the layout specification.
+
+The paired experiment repositories **do** contain source code: RTL, SPICE decks, testbenches, and build scripts for the experiments each document reports. That is deliberate — these are the open experiment suites the documents are written about. It is also a change from this repository's earlier contract, which was PDFs only and excluded source code outright.
+
+Two things have **not** loosened:
+
+- `crucible-core` is never referenced from here, directly or through a submodule.
+- Internal engineering state — project context trees, unreleased claims, secrets, credentials — belongs nowhere in this graph.
+
+Before adding a submodule, confirm the target repository is cleared for external reach on its own merits. Publishing is irreversible: caches and indexes survive deletion.
 
 ---
 
@@ -58,9 +104,14 @@ In short: **A4 portrait, 8.27 × 11.69 in**, Segoe UI and Consolas, ignition ora
 1. Author it against `FORMAT.md` in the internal tree and keep the source there.
 2. Run the §14 pre-flight checklist — geometry, typography, colour, content, export.
 3. Export to PDF and verify: text is selectable, code blocks are searchable, page count matches the `NN / TT` footers, nothing is clipped.
-4. Copy **only the PDF** into this repository.
-5. Add a row to the table above — document, page count, date, what it demonstrates, tools used.
-6. Commit with a message naming the document.
+4. Copy **only the PDF** into the module's document repository and commit it there.
+5. Add a row to that repository's own README table — document, page count, date, what it demonstrates, tools used.
+6. From this superproject, stage the moved submodule pointer and commit it:
+
+   ```bash
+   git add <module>_whitepapers
+   git commit -m "Advance <module>_whitepapers to <document>"
+   ```
 
 ### Naming
 
@@ -70,9 +121,16 @@ Topic_Descriptor_Ignytion_A4.pdf
 
 Underscores, no spaces, no parenthesised suffixes such as `(1)`, no `copy` in the name. Version and date belong in the document footer and on the cover — not in the filename.
 
+### Adding a new module
+
+1. Create `<module>_whitepapers` in `ignytion_ae` and commit the PDFs there.
+2. Add the paired experiment repository inside it as a submodule with `update = none`.
+3. Add the document repository to the experiment repository as a normal submodule.
+4. Register it here: `git submodule add -b main <url> <module>_whitepapers`.
+
 ### Branches
 
-`main` is the published set. Work lands on a topic branch (currently `whitepapers`, one commit ahead of `main` with the HLS lab note) and merges to `main` once the document is approved for release.
+`main` is the published set. Work lands on a topic branch (currently `whitepapers`) and merges to `main` once the document is approved for release. Submodule pointers move under the same discipline — never advance a pointer on `main` to an unreleased document revision.
 
 ---
 
@@ -80,12 +138,13 @@ Underscores, no spaces, no parenthesised suffixes such as `(1)`, no `copy` in th
 
 Known issues in the current set, in priority order:
 
-1. **`Ignytion_Crucible_Linux_User_Guide.pdf` cover is broken.** Page 1 carries two overlapping 31 pt titles — `Crucible Windows User Guide` and `Crucible Linux User Guide` stacked on top of each other. The Windows title was not deleted when the Linux variant was derived. Re-export before this guide goes to anyone.
+1. **`user_guides/Ignytion_Crucible_Linux_User_Guide.pdf` cover is broken.** Page 1 carries two overlapping 31 pt titles — `Crucible Windows User Guide` and `Crucible Linux User Guide` stacked on top of each other. The Windows title was not deleted when the Linux variant was derived. Re-export before this guide goes to anyone.
 2. **The two user guides were built by different pipelines.** Windows is 19 pages from WeasyPrint (HTML); Linux is 13 pages from PowerPoint. They do not match in length or layout. Pick one pipeline and rebuild the other against it.
-3. **`VP_Experiments_Whitepaper (1) copy.pdf` is a byte-identical duplicate** of `VP_Experiments_Whitepaper (1).pdf`. Delete the copy and rename the survivor per the convention above.
-4. **`synthesis_whitepaper.pdf` and `Counter_experiment_whitepaper.pdf` are the same lab note.** They differ only in the "Day 2" framing and minor rewording; `Counter_experiment_whitepaper.pdf` is the later revision. Confirm which is canonical and retire the other.
+3. **`vp_whitepapers/VP_Experiments_Whitepaper (1) copy.pdf` is a byte-identical duplicate** of `VP_Experiments_Whitepaper (1).pdf`. Delete the copy and rename the survivor per the convention above.
+4. **`synthesis_whitepapers/` holds the same lab note twice.** `synthesis_whitepaper.pdf` and `Counter_experiment_whitepaper.pdf` differ only in the "Day 2" framing and minor rewording; the latter is the later revision. Confirm which is canonical and retire the other.
 5. **Filenames are inconsistent.** Only the Analog CMOS and HLS notes follow the convention. The rest should be renamed on their next revision.
-6. **`Ignytion-Whitepaper.pdf` is US Letter** (8.50 × 11.00 in) while everything else is A4. Migrate it at its next major revision.
+6. **`platform_thesis/Ignytion-Whitepaper.pdf` is US Letter** (8.50 × 11.00 in) while everything else is A4. Migrate it at its next major revision.
+7. **`python4vlsi_whitepapers/` has no document yet.** The lab series exists in the paired repository; the write-up is still to be authored.
 
 ---
 
