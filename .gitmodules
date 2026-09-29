@@ -1,28 +1,28 @@
 [submodule "analog_whitepapers"]
 	path = analog_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/analog_whitepapers.git
+	url = ../analog_whitepapers.git
 	branch = main
 [submodule "verilog_whitepapers"]
 	path = verilog_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/verilog_whitepapers.git
+	url = ../verilog_whitepapers.git
 	branch = main
 [submodule "synthesis_whitepapers"]
 	path = synthesis_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/synthesis_whitepapers.git
+	url = ../synthesis_whitepapers.git
 	branch = main
 [submodule "opensoc_whitepapers"]
 	path = opensoc_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/opensoc_whitepapers.git
+	url = ../opensoc_whitepapers.git
 	branch = main
 [submodule "python4vlsi_whitepapers"]
 	path = python4vlsi_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/python4vlsi_whitepapers.git
+	url = ../python4vlsi_whitepapers.git
 	branch = main
 [submodule "vp_whitepapers"]
 	path = vp_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/vp_whitepapers.git
+	url = ../vp_whitepapers.git
 	branch = main
 [submodule "hls_whitepapers"]
 	path = hls_whitepapers
-	url = https://gitlab.com/ignytion_io-group/ignytion_ae/hls_whitepapers.git
+	url = ../hls_whitepapers.git
 	branch = main

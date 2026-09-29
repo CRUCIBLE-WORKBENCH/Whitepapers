@@ -38,6 +38,10 @@ These sets have no paired experiment repository and are tracked directly here. S
 ## Cloning
 
 ```bash
+# GitHub
+git clone --recurse-submodules https://github.com/ignytion-io/whitepapers.git
+
+# GitLab
 git clone --recurse-submodules https://gitlab.com/ignytion_io-group/ignytion_ae/whitepapers.git
 ```
 
