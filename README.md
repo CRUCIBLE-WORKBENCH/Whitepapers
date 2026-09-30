@@ -12,17 +12,28 @@ This repository is a **superproject**. Each module's documents live in their own
 
 Each of these is a standalone repository paired with the experiment repository that produced its documents.
 
-| Folder | Document repository | Paired experiment repository |
-|---|---|---|
-| `analog_whitepapers/` | `ignytion_ae/analog_whitepapers` | `ignytion_ae/analog_experiments` |
-| `verilog_whitepapers/` | `ignytion_ae/verilog_whitepapers` | `ignytion_ae/verilog_experiments` |
-| `synthesis_whitepapers/` | `ignytion_ae/synthesis_whitepapers` | `ignytion_ae/apb_rtl_to_gds` |
-| `opensoc_whitepapers/` | `ignytion_ae/opensoc_whitepapers` | `ignytion_ae/silicon-sethu` |
-| `python4vlsi_whitepapers/` | `ignytion_ae/python4vlsi_whitepapers` | `ignytion_ae/python4vlsi` |
-| `hls_whitepapers/` | `ignytion_ae/hls_whitepapers` | `ignytion_ae/HLS_experiment` |
-| `vp_whitepapers/` | `ignytion_ae/vp_whitepapers` | `core_product/crucyble_flow_demo/crucible-vp-demos` ⚠ |
+| Folder | Document repository | Paired experiment repository | Published to |
+|---|---|---|---|
+| `analog_whitepapers/` | `analog-whitepapers` | `analog-design` | GitLab + GitHub |
+| `verilog_whitepapers/` | `digital-whitepapers` | `digital-design` | GitLab + GitHub |
+| `synthesis_whitepapers/` | `synthesis-whitepapers` | `apb-rtl-to-gds-sky130` | GitLab + GitHub |
+| `hls_whitepapers/` | `hls-whitepapers` | `hls-experiment` | GitLab + GitHub |
+| `vp_whitepapers/` | `vp-whitepapers` | `crucible-vp-demos` | GitLab + GitHub |
+| `opensoc_whitepapers/` | `opensoc-whitepapers` | `silicon-sethu` | document repo both hosts; **experiment repo GitLab only** |
+| `python4vlsi_whitepapers/` | `python4vlsi-whitepapers` | `python4vlsi` | document repo both hosts; **experiment repo GitLab only** |
 
-⚠ `vp_whitepapers` is the one pair that crosses group boundaries — its documents sit in `ignytion_ae`, its demos in `core_product/crucyble_flow_demo`. Access to one does not imply access to the other, and that group's external-reach clearance should be confirmed separately.
+The folder names above are the current checkout paths and still use the older
+`snake_case`; the repository names follow the `kebab-case` convention used on
+GitHub. Realigning the paths is pending — it is a cosmetic change and does not
+affect how submodules resolve.
+
+Two experiment repositories are deliberately **not** published to GitHub:
+`silicon-sethu` (upstream is IIITDM Chennai's, and the public export excludes
+Level-2 material) and `python4vlsi`. Their document repositories are published,
+and both back-references are declared `update = none`, so a recursive clone
+from GitHub skips the missing experiment repo instead of failing.
+
+⚠ `vp-whitepapers` is the one pair that crosses group boundaries — its documents sit in `ignytion_ae`, its demos in `core_product/crucyble_flow_demo`. Access to one does not imply access to the other, and that group's external-reach clearance should be confirmed separately.
 
 ### Plain folders
 
@@ -54,8 +65,8 @@ git submodule update --init --recursive
 `--recursive` is safe here. Each document repository carries its paired experiment repository as a submodule declared with `update = none`, so a recursive checkout stops at that boundary instead of following the pair back and forth forever. To pull an experiment tree in deliberately:
 
 ```bash
-cd analog_whitepapers
-git submodule update --init -- analog_experiments
+cd analog-whitepapers
+git submodule update --init -- analog-design
 ```
 
 ### Why the pairing is circular
@@ -64,10 +75,10 @@ A document is only reproducible if you can get back to the exact experiment revi
 
 ```text
 whitepapers/                            (superproject)
-└── analog_whitepapers/                 submodule, normal update
+└── analog-whitepapers/                 submodule, normal update
     ├── Analog_CMOS_Experiments_…pdf
-    └── analog_experiments/             submodule, update = none  ← recursion stops here
-        └── analog_whitepapers/         declared, never fetched by the line above
+    └── analog-design/             submodule, update = none  ← recursion stops here
+        └── analog-whitepapers/         declared, never fetched by the line above
 ```
 
 The `update = none` guard lives on the document-repository side only. One guard is enough to break the cycle from any entry point.
@@ -115,8 +126,8 @@ In short: **A4 portrait, 8.27 × 11.69 in**, Segoe UI and Consolas, ignition ora
 6. From this superproject, stage the moved submodule pointer and commit it:
 
    ```bash
-   git add <module>_whitepapers
-   git commit -m "Advance <module>_whitepapers to <document>"
+   git add <module>-whitepapers
+   git commit -m "Advance <module>-whitepapers to <document>"
    ```
 
 ### Naming
@@ -129,10 +140,10 @@ Underscores, no spaces, no parenthesised suffixes such as `(1)`, no `copy` in th
 
 ### Adding a new module
 
-1. Create `<module>_whitepapers` in `ignytion_ae` and commit the PDFs there.
+1. Create `<module>-whitepapers` in `ignytion_ae` and commit the PDFs there.
 2. Add the paired experiment repository inside it as a submodule with `update = none`.
 3. Add the document repository to the experiment repository as a normal submodule.
-4. Register it here: `git submodule add -b main <url> <module>_whitepapers`.
+4. Register it here: `git submodule add -b main <url> <module>-whitepapers`.
 
 ### Branches
 
@@ -152,14 +163,14 @@ Known issues in the current set, in priority order. Items inside a submodule are
 
 **In the document submodules**
 
-4. **`vp_whitepapers`: `VP_Experiments_Whitepaper (1) copy.pdf` is a byte-identical duplicate** of `VP_Experiments_Whitepaper (1).pdf`. Delete the copy and rename the survivor per the convention above.
-5. **`synthesis_whitepapers` holds the counter lab note twice.** `synthesis_whitepaper.pdf` and `Counter_experiment_whitepaper.pdf` differ only in the "Day 2" framing and minor rewording; the latter is the later revision. Confirm which is canonical and retire the other. The newer `APB_RTL_to_GDS_Ignytion_A4.pdf` supersedes neither — it covers the full flow, not the counter.
-6. **`python4vlsi_whitepapers` has no document yet.** The lab series exists in the paired repository; the write-up is still to be authored.
+4. **`vp-whitepapers`: `VP_Experiments_Whitepaper (1) copy.pdf` is a byte-identical duplicate** of `VP_Experiments_Whitepaper (1).pdf`. Delete the copy and rename the survivor per the convention above.
+5. **`synthesis-whitepapers` holds the counter lab note twice.** `synthesis_whitepaper.pdf` and `Counter_experiment_whitepaper.pdf` differ only in the "Day 2" framing and minor rewording; the latter is the later revision. Confirm which is canonical and retire the other. The newer `APB_RTL_to_GDS_Ignytion_A4.pdf` supersedes neither — it covers the full flow, not the counter.
+6. **`python4vlsi-whitepapers` has no document yet.** The lab series exists in the paired repository; the write-up is still to be authored.
 7. **Filenames are inconsistent.** Only the Analog CMOS, HLS, and APB RTL-to-GDS notes follow the convention. The rest should be renamed on their next revision.
 
 **Repository naming**
 
-8. **`HLS_experiment` breaks the naming pattern** used by its siblings (`analog_experiments`, `verilog_experiments`) — capitalised and singular. Renaming it to `hls_experiments` would mean updating the submodule name, path, and URL in `hls_whitepapers`, and its own `origin`. Left as-is until decided.
+8. **Submodule checkout paths still use `snake_case`.** Repository names follow GitHub's `kebab-case` convention, but the folder each submodule checks out into (`analog_whitepapers/`, `verilog_whitepapers/`, …) has not been realigned. Purely cosmetic — the `url` is what resolves — but worth tidying in one pass.
 
 ---
 

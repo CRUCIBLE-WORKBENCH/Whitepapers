@@ -1,28 +1,28 @@
 [submodule "analog_whitepapers"]
 	path = analog_whitepapers
-	url = ../analog_whitepapers.git
+	url = ../analog-whitepapers.git
 	branch = main
 [submodule "verilog_whitepapers"]
 	path = verilog_whitepapers
-	url = ../verilog_whitepapers.git
+	url = ../digital-whitepapers.git
 	branch = main
 [submodule "synthesis_whitepapers"]
 	path = synthesis_whitepapers
-	url = ../synthesis_whitepapers.git
+	url = ../synthesis-whitepapers.git
 	branch = main
 [submodule "opensoc_whitepapers"]
 	path = opensoc_whitepapers
-	url = ../opensoc_whitepapers.git
+	url = ../opensoc-whitepapers.git
 	branch = main
 [submodule "python4vlsi_whitepapers"]
 	path = python4vlsi_whitepapers
-	url = ../python4vlsi_whitepapers.git
+	url = ../python4vlsi-whitepapers.git
 	branch = main
 [submodule "vp_whitepapers"]
 	path = vp_whitepapers
-	url = ../vp_whitepapers.git
+	url = ../vp-whitepapers.git
 	branch = main
 [submodule "hls_whitepapers"]
 	path = hls_whitepapers
-	url = ../hls_whitepapers.git
+	url = ../hls-whitepapers.git
 	branch = main
