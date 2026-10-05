@@ -1,7 +1,4 @@
-[submodule "analog-whitepapers"]
-	path = analog-whitepapers
-	url = ../analog-whitepapers.git
-	branch = main
+
 [submodule "digital-whitepapers"]
 	path = digital-whitepapers
 	url = ../digital-whitepapers.git
